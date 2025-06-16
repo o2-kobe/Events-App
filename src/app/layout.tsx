@@ -16,7 +16,7 @@ const sansSerifFont = {
 };
 
 export const metadata: Metadata = {
-  title: "Events Gctu",
+  title: "eventGCTU",
   description: "Houses data for events of GCTU",
 };
 
