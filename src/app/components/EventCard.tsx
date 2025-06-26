@@ -11,9 +11,16 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
   const imgURL = event.imgURL;
   const name = event.name || "N/A";
   const location = event.location || "N/A";
+
   let dateString = event.startDateTime || "N/A";
-  if (event.startDateTime && event.startDateTime.toDate) {
-    dateString = new Date(event.startDateTime.toDate()).toLocaleDateString();
+  if (event.startDateTime) {
+    const testDate = new Date(event.startDateTime);
+    if (
+      testDate.toLocaleDateString() &&
+      testDate.toLocaleDateString() !== "Invalid Date"
+    ) {
+      dateString = testDate.toLocaleDateString();
+    }
   }
 
   return (
