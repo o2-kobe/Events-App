@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "algoliasearch": "^5.29.0",
     "firebase": "^11.9.1",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "reacticons": "^0.0.1"
+    "reacticons": "^0.0.1",
+    "react-instantsearch": "^7.16.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
