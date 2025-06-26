@@ -38,7 +38,7 @@ export default function Home() {
         <div className="w-[30%] mx-auto mt-4 h-12 absolute top-4 left-[35%]">
           <Navbar />
         </div>
-        <div className="absolute top-96 left-5">
+        <div className="absolute top-[70%]">
           <h2 className="text-gray-200 text-left text-5xl">Never miss any</h2>
           <h2 className="text-gray-200 text-8xl">Campus event</h2>
           <UpcomingButton />
