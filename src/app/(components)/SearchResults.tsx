@@ -14,24 +14,18 @@ function SearchResults() {
 
   return (
     <div className="w-full mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-      {items.length === 0 ? (
-        <div className="col-span-full text-gray-500 text-center">
-          No events found.
-        </div>
-      ) : (
-        items.map((item: any) => (
-          <EventCard
-            key={item.objectID || item.id}
-            event={
-              {
-                ...item,
-                id: item.id || item.objectID, // Ensure id is present for EventCard
-              } as Event
-            }
-            onClick={handleEventClick}
-          />
-        ))
-      )}
+      {items?.map((item) => (
+        <EventCard
+          key={item.objectID || item.id}
+          event={
+            {
+              ...item,
+              id: item.id || item.objectID, // Ensure id is present for EventCard
+            } as Event
+          }
+          onClick={handleEventClick}
+        />
+      ))}
     </div>
   );
 }

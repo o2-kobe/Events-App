@@ -1,4 +1,4 @@
-import AboutComponent from "../components/AboutComponent";
+import AboutComponent from "../(components)/AboutComponent";
 
 function page() {
   return <AboutComponent />;

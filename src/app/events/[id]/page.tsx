@@ -2,16 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../services/firebaseConfig";
+import { db } from "../../(services)/firebaseConfig";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Event from "../../Types/Event";
-import LoadingIcon from "../../components/LoadingIcon";
-import BackArrowSVG from "../../components/BackArrowSVG";
-import LocationSVG from "../../components/LocationSVG";
-import CalenderSVG from "../../components/CalendarSVG";
-import TagSVG from "../../components/TagSVG";
-import EventNotFound from "../../components/EventNotFound";
+import LoadingIcon from "../../(components)/LoadingIcon";
+import BackArrowSVG from "../../(components)/BackArrowSVG";
+import LocationSVG from "../../(components)/LocationSVG";
+import CalenderSVG from "../../(components)/CalendarSVG";
+import TagSVG from "../../(components)/TagSVG";
+import EventNotFound from "../../(components)/EventNotFound";
+import Image from "next/image";
 
 export default function EventDetails() {
   const params = useParams();
@@ -57,9 +58,11 @@ export default function EventDetails() {
         {/* Image */}
         <div className="flex-1 w-full max-w-lg bg-white rounded-3xl shadow-2xl">
           <img
-            src={event.imgURL}
-            alt={event.name}
+            src={event.imgURL || "/placeholder.webp"}
+            alt={event.name || ""}
             className="object-contain w-full h-full rounded-2xl"
+            width={600}
+            height={400}
           />
         </div>
 
@@ -117,10 +120,12 @@ export default function EventDetails() {
                     key={index}
                     className="relative h-40 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center"
                   >
-                    <img
-                      src={imgUrl}
+                    <Image
+                      src={imgUrl || "/placeholder.png"}
                       alt={`Event gallery image ${index + 1}`}
                       className="w-full h-full object-contain"
+                      width={400}
+                      height={200}
                     />
                   </div>
                 ))}
