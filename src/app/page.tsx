@@ -63,11 +63,13 @@ export default function Home() {
         </div>
       </div>
 
-      <section id="upcoming-events" className="min-h-screen bg-white p-4">
+      <section
+        id="upcoming-events"
+        className="min-h-screen bg-white p-4 scroll-mt-12"
+      >
         <h2 className="text-4xl font-bold text-primary-blue ml-5">
           Upcoming Events
         </h2>
-        {/* Add a scroll margin top to this element tailwind is scroll-mt-{value} */}
         <UpcomingEvents />
       </section>
     </main>
