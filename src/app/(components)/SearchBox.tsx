@@ -17,7 +17,7 @@ function SearchBox() {
     }
     debounceTimeout.current = setTimeout(() => {
       refine(inputValue);
-    }, 300);
+    }, 500);
     return () => {
       if (debounceTimeout.current) {
         clearTimeout(debounceTimeout.current);

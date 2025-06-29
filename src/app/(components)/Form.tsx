@@ -17,12 +17,27 @@ export default function Form({ type }: FormProps) {
     handleEmailChange,
     handlePasswordChange,
     handleUsernameChange,
+    handleSubmitLogIn,
+    handleSumbitSignUp,
   } = useForm();
   return (
     <div className="flex items-center justify-center min-h-screen p-5 bg-gray-50">
       <div className="w-full max-w-md p-7 rounded-md shadow-2xl bg-white">
         <h3 className="mb-2 text-2xl font-semibold">{type}</h3>
-        <form className="flex flex-col gap-3 items-center w-full mx-auto">
+        <form
+          className="flex flex-col gap-3 items-center w-full mx-auto"
+          onSubmit={
+            type === "Log In"
+              ? (e) => handleSubmitLogIn({ email, password, event: e })
+              : (e) =>
+                  handleSumbitSignUp({
+                    username,
+                    email,
+                    password,
+                    event: e,
+                  })
+          }
+        >
           {type === "Sign Up" ? (
             <div className="bg-gray-100 rounded-md w-full">
               <input
