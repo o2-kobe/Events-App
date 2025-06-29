@@ -8,8 +8,8 @@ interface EventCardProps {
 }
 
 const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
-  const imgURL = event.imgURL;
-  const name = event.name || "N/A";
+  const imgURL = event?.imgURL;
+  const name = event?.name || "N/A";
   const location = event.location || "N/A";
 
   let dateString = event.startDateTime || "N/A";
@@ -41,7 +41,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
           </div>
         )}
         {!event.isUpcoming && (
-          <div className="absolute top-4 right-4 bg-gray-400 text-white px-3 py-1 rounded-full text-sm font-semibold opacity-90">
+          <div className="absolute top-4 right-4 bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-semibold opacity-90">
             Past Event
           </div>
         )}
