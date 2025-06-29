@@ -1,9 +1,10 @@
 import AboutHeader from "./AboutHeader";
 import AboutFeatures from "./AboutFeatures";
+import Footer from "./Footer";
 
 function AboutComponent() {
   return (
-    <>
+    <div>
       <div
         className="relative flex h-[100%] w-[80%] mx-auto min-h-screen py-[1rem] flex-col bg-white justify-between group/design-root overflow-x-hidden"
         style={{ fontFamily: '"Plus Jakarta Sans", "Noto Sans", sans-serif' }}
@@ -17,7 +18,8 @@ function AboutComponent() {
           <AboutFeatures />
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 }
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 function Footer() {
   return (
-    <footer className="bg-[#0f3c4c] text-white p-4 sm:px-20 ">
+    <footer className="bg-violet-950 text-white p-4 sm:px-20 ">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-2">
           <p className="text-3xl font-bold">About Us</p>
