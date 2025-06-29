@@ -53,16 +53,23 @@ export default function PastEvents() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-      {events.length > 0 ? (
-        events.map((event) => (
-          <EventCard key={event.id} event={event} onClick={handleEventClick} />
-        ))
-      ) : (
-        <p className="col-span-full text-center text-gray-400">
-          No past events.
-        </p>
-      )}
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+        {events.length > 0 ? (
+          events.map((event) => (
+            <EventCard
+              key={event.id}
+              event={event}
+              onClick={handleEventClick}
+            />
+          ))
+        ) : (
+          <p className="col-span-full text-center text-gray-400">
+            No past events.
+          </p>
+        )}
+      </div>
+      <Footer />
     </div>
   );
 }
