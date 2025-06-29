@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import EventCard from "./EventCard";
 import Event from "../Types/Event";
 import LoadingIcon from "./LoadingIcon";
+import Footer from "./Footer";
 
 export default function PastEvents() {
   const router = useRouter();
