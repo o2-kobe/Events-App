@@ -1,6 +1,5 @@
 import AboutHeader from "./AboutHeader";
 import AboutFeatures from "./AboutFeatures";
-import Footer from "./Footer";
 
 function AboutComponent() {
   return (
@@ -18,7 +17,6 @@ function AboutComponent() {
           <AboutFeatures />
         </div>
       </div>
-      <Footer />
     </>
   );
 }

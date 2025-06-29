@@ -8,7 +8,7 @@ import {
   ArrowRightOnRectangleIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
-import items from "../data/data.json";
+import items from "../(data)/data";
 import { Descriptions } from "../Types/AboutDescription";
 import SvgIcon from "./SvgIcon";
 import DescriptionContainer from "./DescriptionContainer";
@@ -30,7 +30,7 @@ const iconMap: Record<string, React.ElementType> = {
 
 function AboutFeatures() {
   return (
-    <>
+    <div>
       {typedDescriptions.map((item, index) => {
         const IconComponent = iconMap[item.icon];
 
@@ -50,7 +50,7 @@ function AboutFeatures() {
           </CardContainer>
         );
       })}
-    </>
+    </div>
   );
 }
 
