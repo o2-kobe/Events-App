@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../(services)/firebaseConfig";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import EventGCTUSVG from "./eventGCTUSVG";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,7 +23,9 @@ export default function Navbar() {
 
   return (
     <div className="flex items-center justify-between px-3 py-1 shadow">
-      <Link href="/">Events GCTU</Link>
+      <Link href="/">
+        <EventGCTUSVG />
+      </Link>
       <div className="flex gap-7 items-center font-semibold">
         <Link href="/events">Events</Link>
         <Link href="/about">About</Link>
