@@ -1,4 +1,5 @@
 import { useSearchBox } from "react-instantsearch";
+import { FiX } from "react-icons/fi";
 import React, { useState, useRef, useEffect } from "react";
 
 function SearchBox() {
@@ -43,36 +44,21 @@ function SearchBox() {
         value={inputValue}
         onChange={handleChange}
         placeholder="Search events..."
-        className="border rounded px-3 py-1 focus:outline-none w-full"
+        className="border border-gray-300 rounded-full px-5 py-2 bg-white shadow-sm outline-none focus:shadow-md focus:border-blue-400 transition-all duration-200 w-full text-gray-800 placeholder-gray-400"
         autoComplete="off"
         spellCheck={false}
         maxLength={512}
       />
-      {inputValue && (
+      {/* {inputValue && (
         <button
           type="button"
           onClick={handleClear}
-          className="absolute right-3 text-gray-400 hover:text-gray-700"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
           aria-label="Clear search"
-          tabIndex={0}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <FiX className="w-4 h-4" />
         </button>
-      )}
+      )} */}
     </div>
   );
 }

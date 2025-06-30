@@ -1,43 +1,28 @@
 const items = [
   {
     icon: "BellIcon",
-    title: "Event Notifications",
-    text: "Never miss out on what's happening. Get instant notifications for new events and updates.",
-  },
-  {
-    icon: "MagnifyingGlassIcon",
-    title: "Customized Event Feed",
-    text: "Easily find events based on your interests, clubs, or location.",
+    title: "Reminders",
+    text: "Set reminders for events you care about, with alerts days in advance and an automatic reminder on the day itself.",
   },
   {
     icon: "UsersIcon",
-    title: "Social Interaction",
-    text: "Connect with fellow students, share your experiences, and make new friends.",
+    title: "Community Engagement",
+    text: "Share events with friends, leave comments, and build excitement around upcoming activities.",
   },
   {
-    icon: "Bars3Icon",
-    title: "Event Categories",
-    text: "Browse events by categories like sports, arts, academics, and more.",
-  },
-  {
-    icon: "StarIcon",
+    icon: "MagnifyingGlassIcon",
     title: "Search Function",
-    text: "Use our powerful search to find events by name, date, or location.",
+    text: "Quickly find events using categories, filters, and title search.",
   },
   {
-    icon: "CheckIcon",
-    title: "Personalized Recommendations",
-    text: "Get event suggestions tailored to your preferences and past activity.",
+    icon: "CalendarIcon",
+    title: "Easy Access to Event Schedules",
+    text: "Stay up-to-date with latest events happening on campus.",
   },
   {
-    icon: "ArrowRightOnRectangleIcon",
-    title: "Easy Event RSVP",
-    text: "RSVP to events directly within the app to secure your spot.",
-  },
-  {
-    icon: "UserGroupIcon",
-    title: "Share Events with Friends",
-    text: "Share event details with friends and classmates effortlessly.",
+    icon: "ArrowDownTrayIcon",
+    title: "Quick Installation",
+    text: "Install eventGCTU directly to your home screen for instant access",
   },
 ];
 

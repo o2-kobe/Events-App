@@ -19,6 +19,9 @@ const sansSerifFont = {
 export const metadata: Metadata = {
   title: "eventGCTU",
   description: "Houses data for events of GCTU",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
