@@ -13,16 +13,19 @@ import CalenderSVG from "../../(components)/CalendarSVG";
 import TagSVG from "../../(components)/TagSVG";
 import EventNotFound from "../../(components)/EventNotFound";
 import Image from "next/image";
-import { FaPaperPlane } from "react-icons/fa";
+
 import { FiBell } from "react-icons/fi";
 import { FaBell } from "react-icons/fa";
-import { AiOutlineComment } from "react-icons/ai";
+
+import CommentSection from "../../(components)/CommentSection";
+import CommentForm from "../../(components)/CommentForm";
 
 export default function EventDetails() {
   const params = useParams();
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [alerted, setAlerted] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -153,32 +156,14 @@ export default function EventDetails() {
               </div>
             )}
           </div>
-
-          <div className="border border-gray-200  bg-white shadow-2xl rounded-3xl p-2">
-            <textarea
-              name="comment"
-              id="comment"
-              placeholder="💭Share your thoughts on this event!....."
-              className="outline-none w-full p-4"
-              rows={2}
-            ></textarea>
-            <div className="flex items-center justify-end gap-2">
-              <button
-                title="View comments"
-                className="bg-violet-950 flex mb-1 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-violet-900"
-              >
-                <AiOutlineComment size={16} />
-              </button>
-              <button
-                title="Send comment"
-                className="bg-violet-950 flex mb-1 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-violet-900"
-              >
-                <FaPaperPlane size={16} />
-              </button>
-            </div>
-          </div>
+          <CommentForm
+            eventId={params.id as string}
+            onCommentAdded={() => setShowComments(true)}
+            onToggleComments={() => setShowComments(!showComments)}
+          />
         </div>
       </div>
+      <CommentSection eventId={params.id as string} isVisible={showComments} />
     </div>
   );
 }
