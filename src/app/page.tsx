@@ -65,7 +65,7 @@ export default function Home() {
 
       <section
         id="upcoming-events"
-        className="min-h-screen bg-white p-4 scroll-mt-11"
+        className="min-h-screen bg-white p-4 scroll-mt-13"
       >
         <h2 className="text-4xl font-bold text-primary-blue ml-5">
           Upcoming Events
