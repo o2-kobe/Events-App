@@ -8,7 +8,7 @@ import { getUserData, isUserAdmin } from "../(services)/userService";
 import User from "../Types/User";
 import LoadingIcon from "../(components)/LoadingIcon";
 
-function page() {
+function Page() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -90,9 +90,6 @@ function page() {
       )}
     </div>
   );
-  
-export default function Profile() {
-  return <div className="mt-28">Profile</div>;
 }
 
-export default page;
+export default Page;

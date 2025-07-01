@@ -15,10 +15,11 @@ import EventNotFound from "../../(components)/EventNotFound";
 import Image from "next/image";
 
 import { FiBell } from "react-icons/fi";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaPaperPlane } from "react-icons/fa";
 
 import CommentSection from "../../(components)/CommentSection";
 import CommentForm from "../../(components)/CommentForm";
+import { AiOutlineComment } from "react-icons/ai";
 
 export default function EventDetails() {
   const params = useParams();
@@ -156,7 +157,7 @@ export default function EventDetails() {
               </div>
             )}
           </div>
-          
+
           <CommentForm
             eventId={params.id as string}
             onCommentAdded={() => setShowComments(true)}
