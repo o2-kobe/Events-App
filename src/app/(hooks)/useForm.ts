@@ -41,16 +41,6 @@ export default function useForm() {
     event.preventDefault();
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-
-        if (!user.emailVerified) {
-          await signOut(auth);
-          alert(
-            "Please verify your email before logging in. Check your inbox."
-          );
-          return;
-        }
       .then(() => {
         router.back();
       })
@@ -89,17 +79,25 @@ export default function useForm() {
           alert(
             "Verification email sent. Please check your inbox before logging in."
           );
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error("Error sending email verification:", error);
-          alert("Error sending email verification: " + error.message);
+          if (error instanceof Error) {
+            alert("Error sending email verification: " + error.message);
+          } else {
+            alert("Error sending email verification.");
+          }
         }
 
         try {
           await signOut(auth);
           router.push("/login");
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error("Error signing out:", error);
-          alert("Error signing out: " + error.message);
+          if (error instanceof Error) {
+            alert("Error signing out: " + error.message);
+          } else {
+            alert("Error signing out.");
+          }
         }
       })
       .catch((error) => {

@@ -50,7 +50,7 @@ export default function RootLayout({
                 duration: 1500,
               },
               error: {
-                duration: 1000,
+                duration: 4000,
               },
               style: {
                 fontSize: "16px",
