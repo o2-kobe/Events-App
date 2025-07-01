@@ -13,7 +13,12 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
   const name = event?.name || "N/A";
   const location = event.location || "N/A";
 
-  let dateString = event.startDateTime || "N/A";
+  let dateString: string =
+    typeof event.startDateTime === "string"
+      ? event.startDateTime
+      : event.startDateTime instanceof Date
+      ? event.startDateTime.toISOString()
+      : "N/A";
   if (event.startDateTime) {
     const testDate = new Date(event.startDateTime);
     if (
