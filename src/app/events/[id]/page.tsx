@@ -18,6 +18,8 @@ import { FaBell } from "react-icons/fa";
 import CommentForm from "../../(components)/CommentForm";
 import CommentSection from "../../(components)/CommentSection";
 import toast from "react-hot-toast";
+import { useSession } from "@/app/(hooks)/SessionContext";
+import { useRouter } from "next/navigation";
 
 export default function EventDetails() {
   const params = useParams();
@@ -25,6 +27,8 @@ export default function EventDetails() {
   const [loading, setLoading] = useState(true);
   const [alerted, setAlerted] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const { isLoggedIn } = useSession();
+  const router = useRouter();
 
   const sendToast = () =>
     alerted
@@ -70,8 +74,12 @@ export default function EventDetails() {
         {event?.isUpcoming ? (
           <span
             onClick={() => {
-              setAlerted((alerted) => !alerted);
-              sendToast();
+              if (isLoggedIn) {
+                setAlerted((alerted) => !alerted);
+                sendToast();
+              } else {
+                router.push("/login");
+              }
             }}
             className="flex items-center gap-1 bg-gray-200 text-primary-blue hover:bg-gray-100 cursor-pointer px-2 py-1 rounded-lg shadow-2xl "
           >

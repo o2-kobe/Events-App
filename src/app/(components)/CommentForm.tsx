@@ -20,7 +20,7 @@ export default function CommentForm({
 }: CommentFormProps) {
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export default function CommentForm({
       <textarea
         name="comment"
         id="comment"
-        placeholder="💭Share your thoughts on this event!....."
+        placeholder="💭Share your thoughts on this event!.."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         className="outline-none w-full p-4"

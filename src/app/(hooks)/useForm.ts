@@ -39,7 +39,7 @@ export default function useForm() {
     event.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        router.push("/");
+        router.back();
       })
       .catch((error) => {
         alert("Error during sign in:" + error.message);

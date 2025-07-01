@@ -50,7 +50,7 @@ export default function Modal({
   return ReactDOM.createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-lg bg-white/30"
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-lg bg-[rgba(0,0,0,0.4)]"
       onClick={handleOverlayClick}
       aria-modal="true"
       role="dialog"

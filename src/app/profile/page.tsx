@@ -121,7 +121,7 @@ function Page() {
         </p>
         <button
           onClick={handleDeleteAccount}
-          className="bg-red-300 rounded-[0.3rem] p-2 text-white w-[50%] cursor-pointer hover:bg-red-500 transition duration-300"
+          className="bg-red-500 rounded-[0.3rem] p-2 text-white w-[50%] cursor-pointer hover:bg-red-400 transition duration-300"
         >
           Delete Account
         </button>
