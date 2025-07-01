@@ -51,11 +51,8 @@ export default function useForm() {
           );
           return;
         }
-        if (document.referrer.includes("/signup")) {
-          router.push("/");
-        } else {
-          router.back();
-        }
+      .then(() => {
+        router.back();
       })
       .catch((error) => {
         alert("Error during sign in: " + error.message);
