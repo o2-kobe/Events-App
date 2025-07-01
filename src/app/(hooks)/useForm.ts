@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+  signOut,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../(services)/firebaseConfig";
@@ -26,7 +29,6 @@ export default function useForm() {
     setPassword(e.target.value);
   };
 
-  // Define the submit function for log in
   function handleSubmitLogIn({
     email,
     password,
@@ -37,16 +39,26 @@ export default function useForm() {
     event: React.FormEvent<HTMLFormElement>;
   }) {
     event.preventDefault();
+
     signInWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+          await signOut(auth);
+          alert(
+            "Please verify your email before logging in. Check your inbox."
+          );
+          return;
+        }
       .then(() => {
         router.back();
       })
       .catch((error) => {
-        alert("Error during sign in:" + error.message);
+        alert("Error during sign in: " + error.message);
       });
   }
 
-  // Define form submit for signUp using the values from useForm
   function handleSumbitSignUp({
     username,
     email,
@@ -59,20 +71,40 @@ export default function useForm() {
     event: React.FormEvent<HTMLFormElement>;
   }) {
     event.preventDefault();
+
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Save user data to Firestore
-        const userDocRef = doc(db, "users", userCredential.user.uid);
-        return setDoc(userDocRef, {
-          username: username,
-          email: email,
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+
+        await updateProfile(user, { displayName: username });
+
+        const userDocRef = doc(db, "users", user.uid);
+        await setDoc(userDocRef, {
+          username,
+          email,
         });
-      })
-      .then(() => {
-        console.log("User created and data saved to Firestore successfully");
+
+        try {
+          await sendEmailVerification(user);
+          alert(
+            "Verification email sent. Please check your inbox before logging in."
+          );
+        } catch (error: any) {
+          console.error("Error sending email verification:", error);
+          alert("Error sending email verification: " + error.message);
+        }
+
+        try {
+          await signOut(auth);
+          router.push("/login");
+        } catch (error: any) {
+          console.error("Error signing out:", error);
+          alert("Error signing out: " + error.message);
+        }
       })
       .catch((error) => {
-        alert("Error during sign up:" + error.message);
+        console.error("Error during sign up:", error);
+        alert("Error during sign up: " + error.message);
       });
   }
 
