@@ -5,8 +5,9 @@ export default function CategoryRefinementList({
 }: {
   attribute: string;
 }) {
-  const { items, refine, isFromSearch, searchForItems, canRefine } =
-    useRefinementList({ attribute });
+  const { items, refine } = useRefinementList({
+    attribute,
+  });
 
   return (
     <div className="bg-white rounded-xl shadow p-4 flex flex-col gap-2">

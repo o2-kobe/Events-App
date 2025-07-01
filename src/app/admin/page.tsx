@@ -10,6 +10,7 @@ import {
   uploadMultipleImages,
 } from "../(services)/eventService";
 import Event from "../Types/Event";
+import Image from "next/image";
 
 const PREDEFINED_CATEGORIES = [
   "Health",
@@ -97,7 +98,7 @@ export default function AdminPage() {
         const data = await fetchAllEvents();
         setEvents(data);
       } catch (err) {
-        setError("Failed to fetch events");
+        if (err instanceof Error) setError("Failed to fetch events");
       } finally {
         setLoading(false);
       }
@@ -130,7 +131,7 @@ export default function AdminPage() {
       await deleteEvent(id);
       setEvents((prev) => prev.filter((e) => e.id !== id));
     } catch (err) {
-      setError("Failed to delete event");
+      if (err instanceof Error) setError("Failed to delete event");
     } finally {
       setDeletingId(null);
     }
@@ -201,7 +202,7 @@ export default function AdminPage() {
       if (additionalFileInputRef.current)
         additionalFileInputRef.current.value = "";
     } catch (err) {
-      setFormError("Failed to add event");
+      if (err instanceof Error) setFormError("Failed to add event");
     } finally {
       setAdding(false);
     }
@@ -295,7 +296,7 @@ export default function AdminPage() {
       setShowEditModal(false);
       setEditingEvent(null);
     } catch (err) {
-      setEditFormError("Failed to update event");
+      if (err instanceof Error) setEditFormError("Failed to update event");
     } finally {
       setUpdating(false);
     }
@@ -470,7 +471,7 @@ export default function AdminPage() {
                   required
                 />
                 {mainImagePreview && (
-                  <img
+                  <Image
                     src={mainImagePreview}
                     alt="Main Preview"
                     className="mt-2 h-24 object-contain rounded"
@@ -490,7 +491,7 @@ export default function AdminPage() {
                 {additionalImagesPreview.length > 0 && (
                   <div className="flex gap-2 mt-2 flex-wrap">
                     {additionalImagesPreview.map((src, idx) => (
-                      <img
+                      <Image
                         key={idx}
                         src={src}
                         alt={`Preview ${idx + 1}`}
@@ -622,13 +623,13 @@ export default function AdminPage() {
                 />
                 {/* Show preview of new image if selected, else show current */}
                 {editMainImagePreview ? (
-                  <img
+                  <Image
                     src={editMainImagePreview}
                     alt="Main Preview"
                     className="mt-2 h-24 object-contain rounded"
                   />
                 ) : editImgURL ? (
-                  <img
+                  <Image
                     src={editImgURL}
                     alt="Current Main"
                     className="mt-2 h-24 object-contain rounded"
@@ -649,7 +650,7 @@ export default function AdminPage() {
                 {editAdditionalImagesPreview.length > 0 && (
                   <div className="flex gap-2 mt-2 flex-wrap">
                     {editAdditionalImagesPreview.map((src, idx) => (
-                      <img
+                      <Image
                         key={idx}
                         src={src}
                         alt={`Preview ${idx + 1}`}
@@ -663,7 +664,7 @@ export default function AdminPage() {
                   <div className="flex gap-2 mt-2 flex-wrap">
                     {editAdditionalImgURLs.map((url, idx) => (
                       <div key={idx} className="relative inline-block">
-                        <img
+                        <Image
                           src={url}
                           alt={`Current ${idx + 1}`}
                           className="h-16 object-contain rounded"

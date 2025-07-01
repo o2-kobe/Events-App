@@ -14,8 +14,8 @@ function AboutHeader() {
       </h2>
       <p className="text-[#111518] text-base font-normal leading-normal pt-1 px-4">
         We aim to foster a vibrant campus community by bridging the gap between
-        students and events. Whether you're looking to learn, network, or have
-        fun, eventGCTU ensures you never miss an opportunity to be part of
+        students and events. Whether you&pos;re looking to learn, network, or
+        have fun, eventGCTU ensures you never miss an opportunity to be part of
         something exciting.
       </p>
     </div>

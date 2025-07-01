@@ -1,9 +1,8 @@
 import { useSearchBox } from "react-instantsearch";
-import { FiX } from "react-icons/fi";
 import React, { useState, useRef, useEffect } from "react";
 
 function SearchBox() {
-  const { query, refine, clear } = useSearchBox();
+  const { query, refine } = useSearchBox();
   const [inputValue, setInputValue] = useState(query);
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -30,12 +29,6 @@ function SearchBox() {
     setInputValue(e.currentTarget.value);
   }
 
-  function handleClear() {
-    setInputValue("");
-    clear();
-    inputRef.current?.focus();
-  }
-
   return (
     <div className="flex items-center gap-2 relative w-full max-w-md">
       <input
@@ -49,16 +42,6 @@ function SearchBox() {
         spellCheck={false}
         maxLength={512}
       />
-      {/* {inputValue && (
-        <button
-          type="button"
-          onClick={handleClear}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-          aria-label="Clear search"
-        >
-          <FiX className="w-4 h-4" />
-        </button>
-      )} */}
     </div>
   );
 }

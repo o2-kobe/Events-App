@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { db, auth } from "../(services)/firebaseConfig";
 import { AiOutlineComment } from "react-icons/ai";
 import { FaPaperPlane } from "react-icons/fa";
+import { useSession } from "../(hooks)/SessionContext";
 
 interface CommentFormProps {
   eventId: string;
@@ -21,6 +22,7 @@ export default function CommentForm({
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user] = useAuthState(auth);
+  const { isLoggedIn } = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +55,11 @@ export default function CommentForm({
       <textarea
         name="comment"
         id="comment"
-        placeholder="💭Share your thoughts on this event!.."
+        placeholder={
+          isLoggedIn
+            ? "💭Share your thoughts on this event!.."
+            : "🔒Log in to comment"
+        }
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         className="outline-none w-full p-4"

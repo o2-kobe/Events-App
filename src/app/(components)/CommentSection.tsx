@@ -9,6 +9,7 @@ import {
   onSnapshot,
   getDoc,
   doc,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "../(services)/firebaseConfig";
 import Comment from "../Types/Comment";
@@ -40,8 +41,11 @@ export default function CommentSection({
         const data = docSnapshot.data();
         try {
           const userDoc = await getDoc(doc(db, "users", data.userID));
+          interface UserData {
+            username?: string;
+          }
           const userName = userDoc.exists()
-            ? (userDoc.data() as any)?.username || "Unknown User"
+            ? (userDoc.data() as UserData)?.username || "Unknown User"
             : "Unknown User";
 
           return {
@@ -71,11 +75,16 @@ export default function CommentSection({
 
     return () => unsubscribe();
   }, [eventId, isVisible]);
-
-  const formatTimestamp = (timestamp: any) => {
+  const formatTimestamp = (timestamp: Timestamp | Date | null) => {
+    if (!timestamp) return "Just now";
     if (!timestamp) return "Just now";
 
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    const date =
+      timestamp instanceof Timestamp
+        ? timestamp.toDate()
+        : timestamp instanceof Date
+        ? timestamp
+        : new Date(timestamp as string | number | Date);
     const now = new Date();
     const diffInMinutes = Math.floor(
       (now.getTime() - date.getTime()) / (1000 * 60)

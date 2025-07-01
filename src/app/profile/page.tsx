@@ -102,12 +102,9 @@ function Page() {
               readOnly
             />
           </label>
-          <Link href="#" className="text-red-400">
-            Reset Password
-          </Link>
           <button
             onClick={handleLogout}
-            className="bg-primary-blue text-white rounded-[0.3rem] py-2 cursor-pointer hover:bg-primary-blue/90 transition-all duration-300"
+            className="bg-violet-950 text-white rounded-[0.3rem] py-2 cursor-pointer hover:bg-primary-blue/90 transition-all duration-300"
           >
             Log out
           </button>

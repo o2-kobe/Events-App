@@ -91,7 +91,7 @@ export default function EventDetails() {
 
       <div className="flex flex-col lg:flex-row gap-10 items-start">
         {/* Image */}
-        <div className="flex-1 w-full max-w-lg bg-white rounded-3xl shadow-2xl">
+        <div className="flex-1 w-full lg:w-1/2 max-w-lg bg-white rounded-3xl shadow-2xl">
           <Image
             src={event.imgURL || "/placeholder.webp"}
             alt={event.name || ""}
@@ -102,7 +102,7 @@ export default function EventDetails() {
         </div>
 
         {/* Details */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full lg:w-1/2">
           <div className="flex-1 w-full max-w-2xl bg-white rounded-3xl shadow-2xl pt-4 px-8">
             <h1 className="text-4xl font-extrabold mb-6 text-gray-900 leading-tight">
               {event.name}
