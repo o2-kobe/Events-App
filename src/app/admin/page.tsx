@@ -225,9 +225,19 @@ export default function AdminPage() {
         : ""
     );
     setEditStartDateTime(
-      event.startDateTime ? event.startDateTime.slice(0, 16) : ""
+      event.startDateTime
+        ? typeof event.startDateTime === "string"
+          ? event.startDateTime.slice(0, 16)
+          : new Date(event.startDateTime).toISOString().slice(0, 16)
+        : ""
     );
-    setEditEndDateTime(event.endDateTime ? event.endDateTime.slice(0, 16) : "");
+    setEditEndDateTime(
+      event.endDateTime
+        ? typeof event.endDateTime === "string"
+          ? event.endDateTime.slice(0, 16)
+          : new Date(event.endDateTime).toISOString().slice(0, 16)
+        : ""
+    );
     setEditIsRecurring(!!event.isRecurring);
     setEditRecurrencePattern(event.recurrencePattern || "");
     setEditImgURL(event.imgURL || null);
