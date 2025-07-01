@@ -77,7 +77,7 @@ export default function EventDetails() {
       <div className="flex flex-col lg:flex-row gap-10 items-start">
         {/* Image */}
         <div className="flex-1 w-full max-w-lg bg-white rounded-3xl shadow-2xl">
-          <img
+          <Image
             src={event.imgURL || "/placeholder.webp"}
             alt={event.name || ""}
             className="object-contain w-full h-full rounded-2xl"
