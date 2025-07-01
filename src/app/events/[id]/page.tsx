@@ -156,11 +156,36 @@ export default function EventDetails() {
               </div>
             )}
           </div>
+          
           <CommentForm
             eventId={params.id as string}
             onCommentAdded={() => setShowComments(true)}
             onToggleComments={() => setShowComments(!showComments)}
           />
+
+          <div className="border border-gray-200  bg-white shadow-2xl rounded-3xl p-2 text-gray-800">
+            <textarea
+              name="comment"
+              id="comment"
+              placeholder="💭Share your thoughts on this event!....."
+              className="outline-none w-full p-4"
+              rows={2}
+            ></textarea>
+            <div className="flex items-center justify-end gap-2">
+              <button
+                title="View comments"
+                className="bg-violet-950 flex mb-1 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-violet-900"
+              >
+                <AiOutlineComment size={16} />
+              </button>
+              <button
+                title="Send comment"
+                className="bg-violet-950 flex mb-1 text-white px-2 py-1 rounded-md cursor-pointer hover:bg-violet-900"
+              >
+                <FaPaperPlane size={16} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <CommentSection eventId={params.id as string} isVisible={showComments} />
