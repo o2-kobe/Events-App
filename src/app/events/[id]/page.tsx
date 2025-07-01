@@ -17,6 +17,7 @@ import { FiBell } from "react-icons/fi";
 import { FaBell } from "react-icons/fa";
 import CommentForm from "../../(components)/CommentForm";
 import CommentSection from "../../(components)/CommentSection";
+import toast from "react-hot-toast";
 
 export default function EventDetails() {
   const params = useParams();
@@ -24,6 +25,11 @@ export default function EventDetails() {
   const [loading, setLoading] = useState(true);
   const [alerted, setAlerted] = useState(false);
   const [showComments, setShowComments] = useState(false);
+
+  const sendToast = () =>
+    alerted
+      ? toast.error("Unsubscribed from notifications")
+      : toast.success("You'll receive notifications for this event");
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -63,10 +69,13 @@ export default function EventDetails() {
 
         {event?.isUpcoming ? (
           <span
-            onClick={() => setAlerted((alerted) => !alerted)}
+            onClick={() => {
+              setAlerted((alerted) => !alerted);
+              sendToast();
+            }}
             className="flex items-center gap-1 bg-gray-200 text-primary-blue hover:bg-gray-100 cursor-pointer px-2 py-1 rounded-lg shadow-2xl "
           >
-            Get event alert
+            {!alerted ? "Get event alert" : "Alert set"}
             {alerted ? <FaBell size={16} /> : <FiBell size={16} />}
           </span>
         ) : null}
