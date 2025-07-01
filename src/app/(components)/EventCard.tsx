@@ -1,6 +1,7 @@
 import Event from "../Types/Event";
 import LocationSVG from "./LocationSVG";
 import CalenderSVG from "./CalendarSVG";
+import Image from "next/image";
 
 interface EventCardProps {
   event: Event;
@@ -30,10 +31,12 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
       className="group relative bg-card-background rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer max-w-md w-full"
     >
       <div className="relative h-96 w-full">
-        <img
-          src={imgURL}
+        <Image
+          src={imgURL || "/placeholder.webp"}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          width={600}
+          height={400}
         />
         {event.isUpcoming && (
           <div className="absolute top-4 right-4 bg-accent-yellow text-white px-3 py-1 rounded-full text-sm font-semibold">
