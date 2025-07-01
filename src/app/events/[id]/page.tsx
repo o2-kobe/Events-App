@@ -116,14 +116,20 @@ export default function EventDetails() {
               <div className="flex items-center text-gray-600 text-lg">
                 <CalenderSVG />
                 <span>
-                  {event.startDateTime && event.startDateTime.toDate
-                    ? new Date(
-                        event.startDateTime.toDate()
-                      ).toLocaleDateString()
-                    : event.startDateTime}
-                  {event.endDateTime && event.endDateTime.toDate
+                  {event.startDateTime
+                    ? typeof event.startDateTime === "string"
+                      ? new Date(event.startDateTime).toLocaleDateString()
+                      : event.startDateTime instanceof Date
+                      ? event.startDateTime.toLocaleDateString()
+                      : ""
+                    : ""}
+                  {event.endDateTime
                     ? " - " +
-                      new Date(event.endDateTime.toDate()).toLocaleDateString()
+                      (typeof event.endDateTime === "string"
+                        ? new Date(event.endDateTime).toLocaleDateString()
+                        : event.endDateTime instanceof Date
+                        ? event.endDateTime.toLocaleDateString()
+                        : "")
                     : ""}
                 </span>
               </div>
