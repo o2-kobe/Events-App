@@ -5,14 +5,21 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { auth } from "../(services)/firebaseConfig";
 import { getUserData, isUserAdmin } from "../(services)/userService";
+import { deleteUser, signOut } from "firebase/auth";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../(services)/firebaseConfig";
 import User from "../Types/User";
 import LoadingIcon from "../(components)/LoadingIcon";
+import { useRouter } from "next/navigation";
+import Modal from "../(components)/Modal";
 
 function Page() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -33,6 +40,38 @@ function Page() {
 
     fetchUserData();
   }, []);
+
+  const handleDeleteAccount = async () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteAccount = async () => {
+    setDeleting(true);
+    try {
+      if (auth.currentUser) {
+        // Delete user data from Firestore
+        await deleteDoc(doc(db, "users", auth.currentUser.uid));
+        // Delete from admins collection if user is an admin
+        const adminDoc = await isUserAdmin(auth.currentUser.uid);
+        if (adminDoc) {
+          await deleteDoc(doc(db, "admins", auth.currentUser.uid));
+        }
+        // Delete the auth user
+        await deleteUser(auth.currentUser);
+      }
+      router.push("/");
+    } catch (error) {
+      alert("Error deleting account: " + error);
+    } finally {
+      setDeleting(false);
+      setShowDeleteModal(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/");
+  };
 
   if (loading) {
     return <LoadingIcon />;
@@ -66,18 +105,24 @@ function Page() {
           <Link href="#" className="text-red-400">
             Reset Password
           </Link>
-          <button className="bg-[#335c85] rounded-[0.3rem] py-2 cursor-pointer">
+          <button
+            onClick={handleLogout}
+            className="bg-primary-blue text-white rounded-[0.3rem] py-2 cursor-pointer hover:bg-primary-blue/90 transition-all duration-300"
+          >
             Log out
           </button>
         </div>
       </div>
       <div className="flex flex-col gap-2 border border-[#d2cece] border-solid rounded-lg p-4">
         <p className="font-medium">Account Deletion</p>
-        <p className="text-red-300">
+        <p className="text-red-400">
           Deleting your account is permanent. All your data will be lost and
           cannot be recovered.
         </p>
-        <button className="bg-[#e73f3f] rounded-[0.3rem] p-2 text-white w-[50%] cursor-pointer">
+        <button
+          onClick={handleDeleteAccount}
+          className="bg-red-300 rounded-[0.3rem] p-2 text-white w-[50%] cursor-pointer hover:bg-red-500 transition duration-300"
+        >
           Delete Account
         </button>
       </div>
@@ -88,6 +133,32 @@ function Page() {
           </button>
         </Link>
       )}
+      <Modal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Confirm Account Deletion"
+      >
+        <p className="mb-4 text-red-400 font-medium">
+          Are you sure you want to delete your account? This action cannot be
+          undone.
+        </p>
+        <div className="flex gap-4 justify-end">
+          <button
+            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+            onClick={() => setShowDeleteModal(false)}
+            disabled={deleting}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition duration-300"
+            onClick={confirmDeleteAccount}
+            disabled={deleting}
+          >
+            {deleting ? "Deleting..." : "Delete"}
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }
