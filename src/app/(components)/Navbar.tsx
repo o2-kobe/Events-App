@@ -1,21 +1,16 @@
 "use client";
+
 import Link from "next/link";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../(services)/firebaseConfig";
-import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import EventGCTUSVG from "./eventGCTUSVG";
+import { useSession } from "../(hooks)/SessionContext";
+import { HiUserCircle } from "react-icons/hi";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
   const hideNavbarRoutes = ["/login", "/signup"];
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user);
-    });
-  }, []);
+  const { isLoggedIn } = useSession();
 
   if (hideNavbarRoutes.includes(pathname)) {
     return null;
@@ -26,20 +21,12 @@ export default function Navbar() {
       <Link href="/">
         <EventGCTUSVG />
       </Link>
-      <div className="flex gap-7 items-center font-semibold">
+      <div className="flex gap-5 items-center font-semibold">
         <Link href="/events">Events</Link>
         <Link href="/about">About</Link>
-
-        {isLoggedIn ? (
-          <Link href="/profile">Profile</Link>
-        ) : (
-          <Link
-            href="/login"
-            className="py-2 px-4 rounded-full text-sm bg-violet-950 text-white"
-          >
-            Log In
-          </Link>
-        )}
+        <Link href={isLoggedIn ? "/profile" : "/login"}>
+          <HiUserCircle size={30} />
+        </Link>
       </div>
     </div>
   );

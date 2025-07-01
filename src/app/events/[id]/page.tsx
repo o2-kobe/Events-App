@@ -154,7 +154,7 @@ export default function EventDetails() {
             )}
           </div>
 
-          <div className="border border-gray-200  bg-white shadow-2xl rounded-3xl p-2">
+          <div className="border border-gray-200  bg-white shadow-2xl rounded-3xl p-2 text-gray-800">
             <textarea
               name="comment"
               id="comment"
