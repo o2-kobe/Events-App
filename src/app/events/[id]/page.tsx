@@ -13,16 +13,19 @@ import CalenderSVG from "../../(components)/CalendarSVG";
 import TagSVG from "../../(components)/TagSVG";
 import EventNotFound from "../../(components)/EventNotFound";
 import Image from "next/image";
-import { FaPaperPlane } from "react-icons/fa";
+
 import { FiBell } from "react-icons/fi";
 import { FaBell } from "react-icons/fa";
-import { AiOutlineComment } from "react-icons/ai";
+
+import CommentSection from "../../(components)/CommentSection";
+import CommentForm from "../../(components)/CommentForm";
 
 export default function EventDetails() {
   const params = useParams();
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [alerted, setAlerted] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -153,8 +156,14 @@ export default function EventDetails() {
               </div>
             )}
           </div>
+          
+          <CommentForm
+            eventId={params.id as string}
+            onCommentAdded={() => setShowComments(true)}
+            onToggleComments={() => setShowComments(!showComments)}
+          />
 
-          <div className="border border-gray-200  bg-white shadow-2xl rounded-3xl p-2">
+          <div className="border border-gray-200  bg-white shadow-2xl rounded-3xl p-2 text-gray-800">
             <textarea
               name="comment"
               id="comment"
@@ -179,6 +188,7 @@ export default function EventDetails() {
           </div>
         </div>
       </div>
+      <CommentSection eventId={params.id as string} isVisible={showComments} />
     </div>
   );
 }

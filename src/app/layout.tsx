@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./(components)/Navbar";
+import { SessionContextProvider } from "./(hooks)/SessionContext";
 
 // Import Poppins font
 const poppinsFont = Poppins({
@@ -34,10 +35,12 @@ export default function RootLayout({
       <body
         className={`${poppinsFont.variable} ${sansSerifFont.variable} antialiased`}
       >
-        <div className="fixed top-0 left-0 w-full z-50 bg-white">
-          <Navbar />
-        </div>
-        <div>{children}</div>
+        <SessionContextProvider>
+          <div className="fixed top-0 left-0 w-full z-50 bg-white">
+            <Navbar />
+          </div>
+          {children}
+        </SessionContextProvider>
       </body>
     </html>
   );
