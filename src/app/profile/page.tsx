@@ -125,7 +125,7 @@ function Page() {
       </div>
       {isAdmin && (
         <Link href="/admin">
-          <button className="bg-primary-blue text-white rounded-[0.3rem] py-2 px-4 cursor-pointer hover:bg-primary-blue-700">
+          <button className="bg-violet-950 text-white rounded-[0.3rem] py-2 px-4 cursor-pointer hover:bg-primary-blue-700">
             Admin Dashboard
           </button>
         </Link>
