@@ -48,9 +48,6 @@ export default function AdminPage() {
   const [startDateTime, setStartDateTime] = useState<Date | null>(null);
   const [endDateTime, setEndDateTime] = useState<Date | null>(null);
   const [mainImage, setMainImage] = useState<File | null>(null);
-  const [additionalImages, setAdditionalImages] = useState<FileList | null>(
-    null
-  );
   const [formError, setFormError] = useState<string | null>(null);
 
   // check admin
@@ -79,7 +76,7 @@ export default function AdminPage() {
           const data = await fetchAllEvents();
           setEvents(data);
         } catch (err) {
-          setError("Failed to fetch events");
+          if (err instanceof Error) setError("Failed to fetch events");
         } finally {
           setLoading(false);
         }
@@ -119,7 +116,6 @@ export default function AdminPage() {
     setStartDateTime(null);
     setEndDateTime(null);
     setMainImage(null);
-    setAdditionalImages(null);
     setFormError(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
     if (additionalFileInputRef.current)
@@ -171,7 +167,9 @@ export default function AdminPage() {
       setEvents(data);
       setShowModal(false);
     } catch (err) {
-      setFormError("Save failed");
+      if (err instanceof Error) {
+        setFormError("Save failed");
+      }
     } finally {
       setSaving(false);
     }
@@ -305,16 +303,7 @@ export default function AdminPage() {
               onChange={(e) => setMainImage(e.target.files?.[0] || null)}
             />
           </div>
-          <div>
-            <label className="block mb-1">Additional Images</label>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              ref={additionalFileInputRef}
-              onChange={(e) => setAdditionalImages(e.target.files)}
-            />
-          </div>
+          <div></div>
           {formError && <p className="text-red-500 text-sm">{formError}</p>}
           <button
             disabled={saving}
