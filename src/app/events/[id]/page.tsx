@@ -1,8 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../(services)/firebaseConfig";
+import {
+  doc,
+  getDoc,
+  deleteDoc,
+  setDoc,
+  query,
+  where,
+  getDocs,
+  collection,
+} from "firebase/firestore";
+import { auth, db } from "../../(services)/firebaseConfig";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Event from "../../Types/Event";
@@ -35,6 +44,28 @@ export default function EventDetails() {
       ? toast.error("Unsubscribed from notifications")
       : toast.success("You'll receive notifications for this event");
 
+  const addReminder = async () => {
+    const reminderRef = doc(
+      db,
+      "reminders",
+      `${auth.currentUser?.uid}_${params.id}`
+    );
+    await setDoc(reminderRef, {
+      eventID: params.id,
+      userID: auth.currentUser?.uid,
+    });
+    setAlerted(true);
+    sendToast();
+  };
+
+  const removeReminder = async () => {
+    await deleteDoc(
+      doc(db, "reminders", `${auth.currentUser?.uid}_${params.id}`)
+    );
+    setAlerted(false);
+    sendToast();
+  };
+
   useEffect(() => {
     const fetchEvent = async () => {
       try {
@@ -49,8 +80,21 @@ export default function EventDetails() {
       }
     };
 
+    if (auth.currentUser) {
+      const checkReminder = async () => {
+        const q = query(
+          collection(db, "reminders"),
+          where("userID", "==", auth.currentUser?.uid),
+          where("eventID", "==", params.id)
+        );
+        const snapshot = await getDocs(q);
+        setAlerted(!snapshot.empty);
+      };
+      checkReminder();
+    }
+
     fetchEvent();
-  }, [params.id]);
+  }, [params.id, isLoggedIn]);
 
   if (loading) {
     return <LoadingIcon />;
@@ -71,12 +115,15 @@ export default function EventDetails() {
           Back to Events
         </Link>
 
-        {event?.isUpcoming ? (
+        {event?.startDateTime && new Date(event.startDateTime) > new Date() ? (
           <span
             onClick={() => {
               if (isLoggedIn) {
-                setAlerted((alerted) => !alerted);
-                sendToast();
+                if (alerted) {
+                  removeReminder();
+                } else {
+                  addReminder();
+                }
               } else {
                 router.push("/login");
               }
@@ -137,13 +184,13 @@ export default function EventDetails() {
                 <TagSVG />
                 <span>{event.category}</span>
               </div>
-              {event.isUpcoming ? (
-                <div className="inline-block bg-accent-yellow text-white px-4 py-1 rounded-full text-sm font-semibold mt-2 max-w-fit">
-                  Upcoming Event
-                </div>
-              ) : (
+              {event.endDateTime && new Date(event.endDateTime) < new Date() ? (
                 <div className="inline-block bg-gray-400 text-white px-4 py-1 rounded-full text-sm font-semibold mt-2 max-w-fit">
                   Past Event
+                </div>
+              ) : (
+                <div className="inline-block bg-accent-yellow text-white px-4 py-1 rounded-full text-sm font-semibold mt-2 max-w-fit">
+                  Upcoming Event
                 </div>
               )}
             </div>
@@ -154,28 +201,6 @@ export default function EventDetails() {
                 {event.description}
               </p>
             </div>
-
-            {event.additionalImgURLs && event.additionalImgURLs.length > 0 && (
-              <div className="mt-8">
-                <h2 className="text-2xl font-semibold mb-4">Gallery</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {event.additionalImgURLs.map((imgUrl, index) => (
-                    <div
-                      key={index}
-                      className="relative h-40 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center"
-                    >
-                      <Image
-                        src={imgUrl || "/placeholder.png"}
-                        alt={`Event gallery image ${index + 1}`}
-                        className="w-full h-full object-contain"
-                        width={400}
-                        height={200}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           <CommentForm

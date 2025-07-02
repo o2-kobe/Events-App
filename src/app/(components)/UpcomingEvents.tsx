@@ -19,7 +19,7 @@ export default function UpcomingEvents() {
       try {
         const eventsQuery = query(
           collection(db, "events"),
-          where("isUpcoming", "==", true)
+          where("startDateTime", ">=", new Date())
         );
         const querySnapshot = await getDocs(eventsQuery);
         const eventsData = querySnapshot.docs.map((doc) => ({
