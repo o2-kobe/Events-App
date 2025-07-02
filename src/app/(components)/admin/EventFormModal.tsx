@@ -55,9 +55,6 @@ export default function EventFormModal({
       : ""
   );
   const [mainImage, setMainImage] = useState<File | null>(null);
-  const [additionalImages, setAdditionalImages] = useState<FileList | null>(
-    null
-  );
 
   const reset = () => {
     setName("");
@@ -68,7 +65,6 @@ export default function EventFormModal({
     setStartDateTime("");
     setEndDateTime("");
     setMainImage(null);
-    setAdditionalImages(null);
     setError(null);
     if (fileRef.current) fileRef.current.value = "";
     if (addRef.current) addRef.current.value = "";
@@ -184,13 +180,6 @@ export default function EventFormModal({
         </div>
         <div>
           <label className="block mb-1">Additional Images</label>
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            ref={addRef}
-            onChange={(e) => setAdditionalImages(e.target.files)}
-          />
         </div>
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <button
