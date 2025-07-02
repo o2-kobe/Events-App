@@ -104,6 +104,13 @@ export default function EventDetails() {
     return <EventNotFound />;
   }
 
+  const start =
+    event?.startDateTime &&
+    typeof event.startDateTime === "object" &&
+    "toDate" in event.startDateTime
+      ? (event.startDateTime as { toDate: () => Date }).toDate()
+      : new Date(event?.startDateTime as string | Date);
+
   return (
     <div className="container mx-auto p-8 mt-9">
       <div className="flex items-center justify-between mb-6">
@@ -115,7 +122,7 @@ export default function EventDetails() {
           Back to Events
         </Link>
 
-        {event?.startDateTime && new Date(event.startDateTime) > new Date() ? (
+        {start && start > new Date() ? (
           <span
             onClick={() => {
               if (isLoggedIn) {
