@@ -3,9 +3,7 @@ import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification,
   updateProfile,
-  signOut,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../(services)/firebaseConfig";
@@ -73,32 +71,7 @@ export default function useForm() {
           username,
           email,
         });
-
-        try {
-          await sendEmailVerification(user);
-          alert(
-            "Verification email sent. Please check your inbox before logging in."
-          );
-        } catch (error: unknown) {
-          console.error("Error sending email verification:", error);
-          if (error instanceof Error) {
-            alert("Error sending email verification: " + error.message);
-          } else {
-            alert("Error sending email verification.");
-          }
-        }
-
-        try {
-          await signOut(auth);
-          router.push("/login");
-        } catch (error: unknown) {
-          console.error("Error signing out:", error);
-          if (error instanceof Error) {
-            alert("Error signing out: " + error.message);
-          } else {
-            alert("Error signing out.");
-          }
-        }
+        router.push("/");
       })
       .catch((error) => {
         console.error("Error during sign up:", error);
