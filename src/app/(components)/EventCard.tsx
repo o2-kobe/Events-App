@@ -17,7 +17,9 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
 
   const startDate: Date = (event.startDateTime as any)?.toDate
     ? (event.startDateTime as any).toDate()
-    : new Date(event.startDateTime);
+    : event.startDateTime
+    ? new Date(event.startDateTime)
+    : new Date();
   const endDate: Date | undefined = event.endDateTime
     ? (event.endDateTime as any)?.toDate
       ? (event.endDateTime as any).toDate()

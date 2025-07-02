@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { db, auth } from "../(services)/firebaseConfig";
 import { AiOutlineComment } from "react-icons/ai";
 import { FaPaperPlane } from "react-icons/fa";
-import { useSession } from "../(hooks)/SessionContext";
+import { useSession } from "../(context)/SessionContext";
 
 interface CommentFormProps {
   eventId: string;

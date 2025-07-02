@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import EventGCTUSVG from "./eventGCTUSVG";
-import { useSession } from "../(hooks)/SessionContext";
+import { useSession } from "../(context)/SessionContext";
 import { HiUserCircle } from "react-icons/hi";
 
 export default function Navbar() {

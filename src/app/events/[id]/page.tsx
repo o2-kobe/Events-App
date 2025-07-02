@@ -27,7 +27,7 @@ import { FaBell } from "react-icons/fa";
 import CommentForm from "../../(components)/CommentForm";
 import CommentSection from "../../(components)/CommentSection";
 import toast from "react-hot-toast";
-import { useSession } from "@/app/(hooks)/SessionContext";
+import { useSession } from "@/app/(context)/SessionContext";
 import { useRouter } from "next/navigation";
 
 export default function EventDetails() {

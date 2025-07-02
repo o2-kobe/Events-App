@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./(components)/Navbar";
-import { SessionContextProvider } from "./(hooks)/SessionContext";
+import { SessionContextProvider } from "./(context)/SessionContext";
 import { Toaster } from "react-hot-toast";
 
 // Import Poppins font
