@@ -13,21 +13,18 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
   const name = event?.name || "N/A";
   const location = event.location || "N/A";
 
-  let dateString: string =
-    typeof event.startDateTime === "string"
-      ? event.startDateTime
-      : event.startDateTime instanceof Date
-      ? event.startDateTime.toISOString()
-      : "N/A";
-  if (event.startDateTime) {
-    const testDate = new Date(event.startDateTime);
-    if (
-      testDate.toLocaleDateString() &&
-      testDate.toLocaleDateString() !== "Invalid Date"
-    ) {
-      dateString = testDate.toLocaleDateString();
-    }
-  }
+  const isUpcoming = new Date(event.startDateTime) > new Date();
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+  const startDateString = formatDate(new Date(event.startDateTime));
+  const endDateString = event.endDateTime
+    ? formatDate(new Date(event.endDateTime))
+    : null;
 
   return (
     <div
@@ -43,12 +40,12 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
           width={600}
           height={400}
         />
-        {event.isUpcoming && (
+        {isUpcoming && (
           <div className="absolute top-4 right-4 bg-accent-yellow text-white px-3 py-1 rounded-full text-sm font-semibold">
             Upcoming
           </div>
         )}
-        {!event.isUpcoming && (
+        {!isUpcoming && (
           <div className="absolute top-4 right-4 bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-semibold opacity-90">
             Past Event
           </div>
@@ -65,7 +62,10 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
           </div>
           <div className="flex items-center text-gray-600">
             <CalenderSVG />
-            <span className="text-gray-700">{dateString}</span>
+            <span className="text-gray-700">
+              {startDateString}
+              {endDateString && ` - ${endDateString}`}
+            </span>
           </div>
         </div>
       </div>
