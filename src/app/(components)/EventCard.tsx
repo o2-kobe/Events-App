@@ -13,9 +13,6 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
   const name = event?.name || "N/A";
   const location = event.location || "N/A";
 
-  const isUpcoming = event.startDateTime
-    ? new Date(event.startDateTime) > new Date()
-    : false;
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
       month: "long",
@@ -23,12 +20,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
       year: "numeric",
     });
   };
-  const startDateString = event.startDateTime
-    ? formatDate(new Date(event.startDateTime))
-    : "N/A";
-  const endDateString = event.endDateTime
-    ? formatDate(new Date(event.endDateTime))
-    : null;
+
 
   return (
     <div
