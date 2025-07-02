@@ -15,18 +15,35 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
   const name = event?.name || "N/A";
   const location = event.location || "N/A";
 
-  const startDate: Date = (event.startDateTime as any)?.toDate
-    ? (event.startDateTime as any).toDate()
-    : event.startDateTime
-    ? new Date(event.startDateTime)
-    : new Date();
-  const endDate: Date | undefined = event.endDateTime
-    ? (event.endDateTime as any)?.toDate
-      ? (event.endDateTime as any).toDate()
-      : new Date(event.endDateTime)
-    : undefined;
+  let startDate: Date | null = null;
+  let endDate: Date | null = null;
+  if (event.startDateTime) {
+    if (
+      typeof event.startDateTime === "object" &&
+      "toDate" in event.startDateTime
+    ) {
+      startDate = (event.startDateTime as { toDate: () => Date }).toDate();
+    } else {
+      startDate = new Date(event.startDateTime as string | Date);
+    }
+  }
+  if (event.endDateTime) {
+    if (
+      typeof event.endDateTime === "object" &&
+      "toDate" in event.endDateTime
+    ) {
+      endDate = (event.endDateTime as { toDate: () => Date }).toDate();
+    } else {
+      endDate = new Date(event.endDateTime as string | Date);
+    }
+  }
 
-  const isUpcoming = startDate > new Date();
+  // Use endDate for past/upcoming if available, otherwise startDate
+  const isUpcoming = endDate
+    ? endDate > new Date()
+    : startDate
+    ? startDate > new Date()
+    : false;
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
@@ -35,7 +52,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onClick }) => {
       year: "numeric",
     });
   };
-  const startDateString = formatDate(startDate);
+  const startDateString = startDate ? formatDate(startDate) : "";
   const endDateString = endDate ? formatDate(endDate) : null;
 
   return (

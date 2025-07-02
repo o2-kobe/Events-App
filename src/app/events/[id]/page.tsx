@@ -104,12 +104,34 @@ export default function EventDetails() {
     return <EventNotFound />;
   }
 
-  const start =
-    event?.startDateTime &&
-    typeof event.startDateTime === "object" &&
-    "toDate" in event.startDateTime
-      ? (event.startDateTime as { toDate: () => Date }).toDate()
-      : new Date(event?.startDateTime as string | Date);
+  let startDate: Date | null = null;
+  let endDate: Date | null = null;
+  if (event.startDateTime) {
+    if (
+      typeof event.startDateTime === "object" &&
+      "toDate" in event.startDateTime
+    ) {
+      startDate = (event.startDateTime as { toDate: () => Date }).toDate();
+    } else {
+      startDate = new Date(event.startDateTime as string | Date);
+    }
+  }
+  if (event.endDateTime) {
+    if (
+      typeof event.endDateTime === "object" &&
+      "toDate" in event.endDateTime
+    ) {
+      endDate = (event.endDateTime as { toDate: () => Date }).toDate();
+    } else {
+      endDate = new Date(event.endDateTime as string | Date);
+    }
+  }
+  // Use endDate for past/upcoming if available, otherwise startDate
+  const isUpcoming = endDate
+    ? endDate > new Date()
+    : startDate
+    ? startDate > new Date()
+    : false;
 
   return (
     <div className="container mx-auto p-8 mt-9">
@@ -122,7 +144,7 @@ export default function EventDetails() {
           Back to Events
         </Link>
 
-        {start && start > new Date() ? (
+        {isUpcoming ? (
           <span
             onClick={() => {
               if (isLoggedIn) {
@@ -165,39 +187,32 @@ export default function EventDetails() {
             <div className="flex flex-col gap-4 mb-8">
               <div className="flex items-center text-gray-600 text-lg">
                 <LocationSVG />
-                <span>{event.location}</span>
+                <span>{event.location || "N/A"}</span>
               </div>
               <div className="flex items-center text-gray-600 text-lg">
                 <CalenderSVG />
                 <span>
-                  {event.startDateTime
-                    ? typeof event.startDateTime === "string"
-                      ? new Date(event.startDateTime).toLocaleDateString()
-                      : event.startDateTime instanceof Date
-                      ? event.startDateTime.toLocaleDateString()
-                      : ""
-                    : ""}
-                  {event.endDateTime
-                    ? " - " +
-                      (typeof event.endDateTime === "string"
-                        ? new Date(event.endDateTime).toLocaleDateString()
-                        : event.endDateTime instanceof Date
-                        ? event.endDateTime.toLocaleDateString()
-                        : "")
-                    : ""}
+                  {(() => {
+                    return (
+                      <>
+                        {startDate ? startDate.toLocaleDateString() : ""}
+                        {endDate ? ` - ${endDate.toLocaleDateString()}` : ""}
+                      </>
+                    );
+                  })()}
                 </span>
               </div>
               <div className="flex items-center text-gray-600 text-lg">
                 <TagSVG />
-                <span>{event.category}</span>
+                <span>{event.category || "N/A"}</span>
               </div>
-              {event.endDateTime && new Date(event.endDateTime) < new Date() ? (
-                <div className="inline-block bg-gray-400 text-white px-4 py-1 rounded-full text-sm font-semibold mt-2 max-w-fit">
-                  Past Event
-                </div>
-              ) : (
+              {isUpcoming ? (
                 <div className="inline-block bg-accent-yellow text-white px-4 py-1 rounded-full text-sm font-semibold mt-2 max-w-fit">
                   Upcoming Event
+                </div>
+              ) : (
+                <div className="inline-block bg-gray-400 text-white px-4 py-1 rounded-full text-sm font-semibold mt-2 max-w-fit">
+                  Past Event
                 </div>
               )}
             </div>
