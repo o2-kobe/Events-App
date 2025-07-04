@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../(services)/firebaseConfig";
 import { useRouter } from "next/navigation";
 import EventCard from "./EventCard";
@@ -17,16 +17,42 @@ export default function UpcomingEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const eventsQuery = query(
-          collection(db, "events"),
-          where("startDateTime", ">=", new Date())
-        );
+        const eventsQuery = collection(db, "events");
         const querySnapshot = await getDocs(eventsQuery);
+        const now = new Date();
         const eventsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as Event[];
-        setEvents(eventsData);
+        // Filter using the same logic as EventCard
+        const upcomingEvents = eventsData.filter((event) => {
+          let startDate: Date | null = null;
+          let endDate: Date | null = null;
+          if (event.startDateTime) {
+            if (
+              typeof event.startDateTime === "object" &&
+              "toDate" in event.startDateTime
+            ) {
+              startDate = (
+                event.startDateTime as { toDate: () => Date }
+              ).toDate();
+            } else {
+              startDate = new Date(event.startDateTime as string | Date);
+            }
+          }
+          if (event.endDateTime) {
+            if (
+              typeof event.endDateTime === "object" &&
+              "toDate" in event.endDateTime
+            ) {
+              endDate = (event.endDateTime as { toDate: () => Date }).toDate();
+            } else {
+              endDate = new Date(event.endDateTime as string | Date);
+            }
+          }
+          return endDate ? endDate > now : startDate ? startDate > now : false;
+        });
+        setEvents(upcomingEvents);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
