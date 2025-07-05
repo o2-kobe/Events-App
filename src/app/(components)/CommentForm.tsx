@@ -34,6 +34,7 @@ export default function CommentForm({
       await addDoc(collection(db, "comments"), {
         eventID: eventId,
         userID: user.uid,
+        userName: user.displayName || "Unknown User",
         content: comment.trim(),
         timestamp: serverTimestamp(),
       });

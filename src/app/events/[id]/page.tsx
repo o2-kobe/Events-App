@@ -232,7 +232,7 @@ export default function EventDetails() {
           />
         </div>
       </div>
-      <CommentSection eventId={params.id as string} isVisible={showComments} />
+      <CommentSection eventID={params.id as string} isVisible={showComments} />
     </div>
   );
 }
