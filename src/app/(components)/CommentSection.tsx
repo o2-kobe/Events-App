@@ -44,7 +44,7 @@ export default function CommentSection({
           userID: data.userID,
           content: data.content,
           timestamp: data.timestamp,
-          userName: data.userName,
+          username: data.username,
         } as Comment;
       });
 

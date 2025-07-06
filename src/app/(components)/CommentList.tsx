@@ -35,9 +35,11 @@ export default function CommentList({ comments }: { comments: Comment[] }) {
         comments.map((comment) => (
           <CommentListItem
             key={comment.id}
-            userName={comment.userName}
+            username={comment.username}
             content={comment.content}
             timestamp={formatTimestamp(comment.timestamp)}
+            userID={comment.userID}
+            commentID={comment.id}
           />
         ))
       )}

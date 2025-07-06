@@ -4,7 +4,7 @@ export default interface Comment {
   id: string;
   eventID: string;
   userID: string;
-  userName: string;
+  username: string;
   content: string;
   timestamp: Timestamp; // Firestore timestamp
 }
