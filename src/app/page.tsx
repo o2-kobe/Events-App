@@ -10,7 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBg((prev) => (prev % 2) + 1);
+      setCurrentBg((prev) => (prev % 3) + 1);
     }, 4000);
 
     return () => clearInterval(interval);
@@ -27,7 +27,7 @@ export default function Home() {
           rgba(0, 0, 0, 0.5) 50%,
           rgba(0, 0, 0, 0.329) 100%
         ),
-        url("/back${currentBg}.jpg")`,
+        url("/back${currentBg}.webp")`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "top",
