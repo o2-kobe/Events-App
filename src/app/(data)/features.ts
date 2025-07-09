@@ -1,4 +1,4 @@
-const items = [
+const features = [
   {
     icon: "BellIcon",
     title: "Reminders",
@@ -26,4 +26,4 @@ const items = [
   },
 ];
 
-export default items;
+export default features;
