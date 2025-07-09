@@ -1,13 +1,18 @@
 "use client";
 import Event from "../../Types/Event";
+import { formatFirestoreTimestamp, formatDate } from "../../(utils)/helpers";
 
-interface Props {
+interface EventTableProps {
   events: Event[];
   onEdit: (ev: Event) => void;
   onDelete: (id: string) => void;
 }
 
-export default function EventTable({ events, onEdit, onDelete }: Props) {
+export default function EventTable({
+  events,
+  onEdit,
+  onDelete,
+}: EventTableProps) {
   return (
     <div className="overflow-x-auto border rounded">
       <table className="min-w-full text-sm">
@@ -31,12 +36,12 @@ export default function EventTable({ events, onEdit, onDelete }: Props) {
               </td>
               <td className="p-2 border" data-label="Start">
                 {ev.startDateTime
-                  ? new Date(ev.startDateTime).toLocaleDateString()
+                  ? formatDate(formatFirestoreTimestamp(ev.startDateTime))
                   : ""}
               </td>
               <td className="p-2 border" data-label="End">
                 {ev.endDateTime
-                  ? new Date(ev.endDateTime).toLocaleDateString()
+                  ? formatDate(formatFirestoreTimestamp(ev.endDateTime))
                   : ""}
               </td>
               <td className="p-2 border flex gap-2" data-label="Actions">
