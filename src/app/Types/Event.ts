@@ -7,6 +7,4 @@ export default interface Event {
   category?: string;
   description?: string;
   imgURL?: string;
-  isRecurring?: boolean;
-  recurrencePattern?: string;
 }

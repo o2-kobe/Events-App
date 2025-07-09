@@ -20,32 +20,38 @@ export const deleteEvent = async (eventId: string): Promise<void> => {
   await deleteDoc(doc(db, "events", eventId));
 };
 
-export const addEvent = async (event: Omit<Event, "id">): Promise<void> => {
-  await addDoc(collection(db, "events"), event);
-};
-
-export const updateEvent = async (
-  eventId: string,
-  event: Partial<Event>
-): Promise<void> => {
-  await updateDoc(doc(db, "events", eventId), event);
-};
-
 export const uploadImage = async (
   file: File,
   folder = "event-images"
 ): Promise<string> => {
-  const storageRef = ref(storage, `${folder}/${Date.now()}_${file.name}`);
-  await uploadBytes(storageRef, file);
-  return await getDownloadURL(storageRef);
+  try {
+    const storageRef = ref(storage, `${folder}/${file.name}`);
+    await uploadBytes(storageRef, file);
+    return await getDownloadURL(storageRef);
+  } catch (error) {
+    console.error("Image upload failed:", error);
+    throw new Error("Failed to upload image");
+  }
 };
 
-export const uploadMultipleImages = async (
-  files: FileList | File[],
-  folder = "event-images"
-): Promise<string[]> => {
-  const uploadPromises = Array.from(files).map((file) =>
-    uploadImage(file, folder)
-  );
-  return await Promise.all(uploadPromises);
+export const addEvent = async (
+  event: Omit<Event, "id">,
+  image: File
+): Promise<void> => {
+  const url = await uploadImage(image);
+  await addDoc(collection(db, "events"), { ...event, imgURL: url });
+};
+
+export const editEvent = async (
+  eventID: string,
+  event: Partial<Event>,
+  image: File | null
+): Promise<void> => {
+  const docRef = doc(db, "events", eventID);
+  if (image) {
+    const url = await uploadImage(image);
+    await updateDoc(docRef, { ...event, imgURL: url });
+  } else {
+    await updateDoc(docRef, event);
+  }
 };
