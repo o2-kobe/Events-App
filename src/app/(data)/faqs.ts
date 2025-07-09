@@ -15,13 +15,13 @@ const faqs = [
     id: 3,
     question: "When do I receive reminders for upcoming events?",
     answer:
-      "You will receive reminders 24 hours before and 1 hour before the event starts, as long as notifications are enabled on your device.",
+      "You will receive reminders in your email 24 hours before and 1 hour before the event starts, as long as notifications are enabled on your device.",
   },
   {
     id: 4,
     question: "How can I comment on an event?",
     answer:
-      "To comment on an event, you need to be logged into your student account. Once logged in, you can write and view comments under each event.",
+      "To comment on an event, you need to be logged into an email account. Once logged in, you can write comments under each event.",
   },
   {
     id: 5,
@@ -33,7 +33,7 @@ const faqs = [
     id: 6,
     question: "Can I see past events?",
     answer:
-      "Yes, you can browse past events by visiting the 'Past Events' section in the app.",
+      "Yes, you can browse past events by visiting the Events section in the app.",
   },
   {
     id: 7,
