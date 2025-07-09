@@ -47,6 +47,12 @@ const faqs = [
     answer:
       "No sign-up is required for school events. Just show up at the venue listed in the event details.",
   },
+  {
+    id: 9,
+    question: "What if I want to host an event in the school?",
+    answer:
+      "If you would like to host an event, please see the school authorities or the appropriate department for permission and guidance.",
+  },
 ];
 
 export default faqs;
