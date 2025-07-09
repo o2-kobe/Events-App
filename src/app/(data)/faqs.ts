@@ -27,7 +27,7 @@ const faqs = [
     id: 5,
     question: "Can I share an event with others?",
     answer:
-      "Yes, each event page has a share button that lets you copy the link or share it directly via social platforms.",
+      "Yes, you can copy the link to share it directly via social platforms.",
   },
   {
     id: 6,
