@@ -1,62 +1,94 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Event from "../../Types/Event";
 import Modal from "../Modal";
-import { uploadImage } from "../../(services)/eventService";
+import { formatFirestoreTimestamp } from "../../(utils)/helpers";
 import { EVENT_CATEGORIES } from "../../(utils)/constants";
 import { EVENT_LOCATIONS } from "../../(utils)/constants";
 
 interface EditEventFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initial?: Event | null;
-  onSave: (payload: Omit<Event, "id">, id?: string) => Promise<void>;
+  event: Event | null;
+  onSave: (
+    eventID: string,
+    event: Omit<Event, "id">,
+    imageFile: File | null
+  ) => Promise<void>;
 }
 
-export default function EventFormModal({
+export default function EditEventFormModal({
   isOpen,
   onClose,
-  initial,
+  event,
   onSave,
 }: EditEventFormModalProps) {
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const addRef = useRef<HTMLInputElement>(null);
 
-  const [name, setName] = useState(initial?.name || "");
-  const [description, setDescription] = useState(initial?.description || "");
-  const [location, setLocation] = useState(
-    initial?.location && EVENT_LOCATIONS.includes(initial.location)
-      ? initial.location
-      : EVENT_LOCATIONS[0]
-  );
-  const [customLocation, setCustomLocation] = useState(
-    initial?.location && !EVENT_LOCATIONS.includes(initial.location)
-      ? initial.location
-      : ""
-  );
-  const [category, setCategory] = useState(
-    initial?.category && EVENT_CATEGORIES.includes(initial.category)
-      ? initial.category
-      : EVENT_CATEGORIES[0]
-  );
-  const [customCategory, setCustomCategory] = useState(
-    initial?.category && !EVENT_CATEGORIES.includes(initial.category)
-      ? initial.category
-      : ""
-  );
-  const [startDateTime, setStartDateTime] = useState(
-    initial?.startDateTime
-      ? new Date(initial.startDateTime).toISOString().slice(0, 16)
-      : ""
-  );
-  const [endDateTime, setEndDateTime] = useState(
-    initial?.endDateTime
-      ? new Date(initial.endDateTime).toISOString().slice(0, 16)
-      : ""
-  );
-  const [mainImage, setMainImage] = useState<File | null>(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState(EVENT_LOCATIONS[0]);
+  const [customLocation, setCustomLocation] = useState("");
+  const [category, setCategory] = useState(EVENT_CATEGORIES[0]);
+  const [customCategory, setCustomCategory] = useState("");
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+
+  // Reset form values when modal is closed or event changes
+  useEffect(() => {
+    if (isOpen && event) {
+      setName(event.name || "");
+      setDescription(event.description || "");
+      setLocation(
+        event.location && EVENT_LOCATIONS.includes(event.location)
+          ? event.location
+          : EVENT_LOCATIONS[0]
+      );
+      setCustomLocation(
+        event.location && !EVENT_LOCATIONS.includes(event.location)
+          ? event.location
+          : ""
+      );
+      setCategory(
+        event.category && EVENT_CATEGORIES.includes(event.category)
+          ? event.category
+          : EVENT_CATEGORIES[0]
+      );
+      setCustomCategory(
+        event.category && !EVENT_CATEGORIES.includes(event.category)
+          ? event.category
+          : ""
+      );
+      setStartDateTime(
+        event.startDateTime
+          ? formatFirestoreTimestamp(event.startDateTime)
+              .toISOString()
+              .slice(0, 16)
+          : ""
+      );
+      setEndDateTime(
+        event.endDateTime
+          ? formatFirestoreTimestamp(event.endDateTime)
+              .toISOString()
+              .slice(0, 16)
+          : ""
+      );
+      setImage(null);
+      if (fileRef.current) fileRef.current.value = "";
+    } else if (!isOpen) {
+      setName("");
+      setDescription("");
+      setLocation(EVENT_LOCATIONS[0]);
+      setCustomLocation("");
+      setCategory(EVENT_CATEGORIES[0]);
+      setCustomCategory("");
+      setStartDateTime("");
+      setEndDateTime("");
+      setImage(null);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }, [isOpen, event]);
 
   const reset = () => {
     setName("");
@@ -66,52 +98,31 @@ export default function EventFormModal({
     setCustomCategory("");
     setStartDateTime("");
     setEndDateTime("");
-    setMainImage(null);
-    setError(null);
+    setImage(null);
     if (fileRef.current) fileRef.current.value = "";
-    if (addRef.current) addRef.current.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaving(true);
-    try {
-      let imgURL = initial?.imgURL || "";
-      if (!initial && !mainImage) {
-        setError("Main image required");
-        setSaving(false);
-        return;
-      }
-      if (mainImage) imgURL = await uploadImage(mainImage);
-      const finalCategory = customCategory.trim() || category;
-      const finalLocation = customLocation.trim() || location;
-      await onSave(
-        {
-          name,
-          description,
-          location: finalLocation,
-          category: finalCategory,
-          startDateTime,
-          endDateTime,
-          imgURL,
-        },
-        initial?.id
-      );
-      reset();
-      onClose();
-    } catch {
-      setError("Save failed");
-    } finally {
-      setSaving(false);
-    }
+    const finalCategory = customCategory.trim() || category;
+    const finalLocation = customLocation.trim() || location;
+
+    const updatedEvent = {
+      name,
+      description,
+      location: finalLocation,
+      category: finalCategory,
+      startDateTime,
+      endDateTime,
+    };
+
+    await onSave(event?.id || "", updatedEvent, image);
+    reset();
+    onClose();
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title={initial ? "Edit Event" : "Add Event"}
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title={"Edit Event"}>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 max-h-[80vh] overflow-y-auto pr-2"
@@ -193,23 +204,19 @@ export default function EventFormModal({
         </div>
         <div>
           <label className="block mb-1">
-            Main Image {initial ? "(leave blank to keep)" : ""}
+            Image {event ? "(leave blank to keep previous image)" : ""}
           </label>
           <input
             type="file"
             accept="image/*"
             ref={fileRef}
-            required={!initial}
+            required={!event}
             className="border p-2 rounded w-full"
-            onChange={(e) => setMainImage(e.target.files?.[0] || null)}
+            onChange={(e) => setImage(e.target.files?.[0] || null)}
           />
         </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <button
-          disabled={saving}
-          className="bg-primary-blue text-white rounded py-2 hover:bg-primary-blue-700"
-        >
-          {saving ? "Saving..." : "Save"}
+        <button className="bg-primary-blue text-white rounded py-2 hover:bg-primary-blue-700">
+          Save
         </button>
       </form>
     </Modal>

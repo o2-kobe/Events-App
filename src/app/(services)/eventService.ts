@@ -30,7 +30,7 @@ export const uploadImage = async (
     return await getDownloadURL(storageRef);
   } catch (error) {
     console.error("Image upload failed:", error);
-    throw new Error("Failed to upload image.");
+    throw new Error("Failed to upload image");
   }
 };
 
@@ -38,18 +38,20 @@ export const addEvent = async (
   event: Omit<Event, "id">,
   image: File
 ): Promise<void> => {
-  try {
-    const url = await uploadImage(image);
-    await addDoc(collection(db, "events"), { ...event, imgURL: url });
-  } catch (error) {
-    console.error("Failed to add event:", error);
-    throw new Error("Event creation failed.");
-  }
+  const url = await uploadImage(image);
+  await addDoc(collection(db, "events"), { ...event, imgURL: url });
 };
 
-export const updateEvent = async (
-  eventId: string,
-  event: Partial<Event>
+export const editEvent = async (
+  eventID: string,
+  event: Partial<Event>,
+  image: File | null
 ): Promise<void> => {
-  await updateDoc(doc(db, "events", eventId), event);
+  const docRef = doc(db, "events", eventID);
+  if (image) {
+    const url = await uploadImage(image);
+    await updateDoc(docRef, { ...event, imgURL: url });
+  } else {
+    await updateDoc(docRef, event);
+  }
 };
