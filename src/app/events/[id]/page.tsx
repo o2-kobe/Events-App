@@ -217,9 +217,9 @@ export default function EventDetails() {
               )}
             </div>
 
-            <div className="prose max-w-none mb-8">
+            <div className="w-full mb-8">
               <h2 className="text-2xl font-semibold mb-2">About this event</h2>
-              <p className="text-gray-700 text-lg leading-relaxed">
+              <p className="text-gray-700 text-lg leading-relaxed break-words">
                 {event.description}
               </p>
             </div>
