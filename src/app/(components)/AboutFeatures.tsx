@@ -4,7 +4,6 @@ import {
   CalendarIcon,
   UsersIcon,
   UserGroupIcon,
-  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 import features from "../(data)/features";
 import { Descriptions } from "../Types/AboutDescription";
@@ -21,7 +20,6 @@ const iconMap: Record<string, React.ElementType> = {
   CalendarIcon,
   UsersIcon,
   UserGroupIcon,
-  ArrowDownTrayIcon,
 };
 
 function AboutFeatures() {
