@@ -53,6 +53,9 @@ export default function EventDetails() {
     await setDoc(reminderRef, {
       eventID: params.id,
       userID: auth.currentUser?.uid,
+      sent24h: false,
+      sent1h: false,
+      eventTime: startDate?.getTime(),
     });
     setAlerted(true);
     sendToast();
