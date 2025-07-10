@@ -24,6 +24,7 @@ import EventNotFound from "../../(components)/EventNotFound";
 import Image from "next/image";
 import { FiBell } from "react-icons/fi";
 import { FaBell } from "react-icons/fa";
+import { FiShare2 } from "react-icons/fi";
 import CommentForm from "../../(components)/CommentForm";
 import CommentSection from "../../(components)/CommentSection";
 import toast from "react-hot-toast";
@@ -44,6 +45,21 @@ export default function EventDetails() {
       ? toast.error("Unsubscribed from notifications")
       : toast.success("You'll receive notifications for this event");
 
+  // Share event handler
+  const handleShare = async () => {
+    try {
+      const url = window.location.href;
+      await navigator.clipboard.writeText(url);
+      toast.success("Event link copied to clipboard!");
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error(String(err));
+      }
+    }
+  };
+
   const addReminder = async () => {
     const reminderRef = doc(
       db,
@@ -53,6 +69,9 @@ export default function EventDetails() {
     await setDoc(reminderRef, {
       eventID: params.id,
       userID: auth.currentUser?.uid,
+      sent24h: false,
+      sent1h: false,
+      eventTime: startDate?.getTime(),
     });
     setAlerted(true);
     sendToast();
@@ -206,6 +225,16 @@ export default function EventDetails() {
                 <TagSVG />
                 <span>{event.category || "N/A"}</span>
               </div>
+              {/* Share Event Button */}
+              <button
+                onClick={handleShare}
+                className="cursor-pointer flex items-center gap-2 bg-gray-200 text-primary-blue hover:bg-gray-100 px-4 py-1 rounded-lg shadow-2xl w-fit"
+                type="button"
+                aria-label="Share event"
+              >
+                <FiShare2 size={16} />
+                <span>Share</span>
+              </button>
               {isUpcoming ? (
                 <div className="inline-block bg-accent-yellow text-white px-4 py-1 rounded-full text-sm font-semibold mt-2 max-w-fit">
                   Upcoming Event

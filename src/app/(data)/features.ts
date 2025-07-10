@@ -19,11 +19,6 @@ const features = [
     title: "Easy Access to Event Schedules",
     text: "Stay up-to-date with latest events happening on campus.",
   },
-  {
-    icon: "ArrowDownTrayIcon",
-    title: "Quick Installation",
-    text: "Install eventGCTU directly to your home screen for instant access",
-  },
 ];
 
 export default features;
