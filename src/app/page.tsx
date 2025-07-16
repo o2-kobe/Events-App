@@ -8,6 +8,15 @@ import UpcomingEvents from "./(components)/UpcomingEvents";
 export default function Home() {
   const [currentBg, setCurrentBg] = useState(1);
 
+  // Preload background images to prevent flash between transitions
+  useEffect(() => {
+    const images = [1, 2, 3].map((num) => `/back${num}.webp`);
+    images.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBg((prev) => (prev % 3) + 1);
